@@ -1,0 +1,39 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+  <% else %>
+<%= simple_form_for @part do |f| %> 
+
+  <%= f.input :customer_name, :label => t('Customer'), :readonly => true, :input_html => {:value => @customer.name} %>
+  <%= f.input :project_name, :label => t('Project Name'), :readonly => true, :input_html => {:value => @project.name} %>
+  <%= f.input :name, :label => t('Part Name'), :readonly => readonly?(@part, 'name') %>  
+  <%= f.input :part_num, :label => t('Part#'), :readonly => readonly?(@part, 'part_num') %>
+  <%= f.input :spec, :label => t('Spec'), :input_html => {:rows => 3}, :readonly => readonly?(@part, 'spec') %>
+  <%= f.input :qty, :label => t('Qty'), :readonly => readonly?(@part, 'qty') %>
+  <%= f.input :unit, :label => t('Qty Unit'), :collection => @qty_unit, :readonly => readonly?(@part, 'unit') %>
+  <%= f.input :unit_price, :label => t('Unit Price($)'), :readonly => readonly?(@part, 'unit_price') %>
+  <%= f.input :shipping_cost, :label => t('Shipping Cost($)'), :readonly => readonly?(@part, 'shipping_cost') %>
+  <%= f.input :tax, :label => t('Tax($)'), :readonly => readonly?(@part, 'tax') %>
+  <%= f.input :misc_cost, :label => t('Misc Cost($)'), :readonly => readonly?(@part, 'misc_cost') %>
+  <%= f.input :total, :label => t('Total($)'), :readonly => true %>
+  <%= f.input :start_date, :label => t('Start Date'), :as => :string, :readonly => readonly?(@part, 'start_date') %>
+  <%= f.input :finish_date, :label => t('Finish Date'), :as => :string, :readonly => readonly?(@part, 'finish_date') %>
+  <%= f.input :completed, :label => t("Completed?"), :as => :boolean unless readonly?(@part, 'completed') %>
+  <%= f.input :completed_noupdate, :label => t("Completed?"), :readonly => true, :input_html => {:value => @part.received ? t('Yes') : t('No') } if readonly?(@part, 'completed') %>
+  <%= f.input :status_id, :label => t('Sourcing Status'), :collection => Commonx::MiscDefinition.where(:for_which => 'part_sourcing_status') unless readonly?(@part, 'status_id') %>
+  <%= f.input :status_id, :label => t('Sourcing Status'), :readonly => true, :input_html => {:value => @part.status.name} if readonly?(@part, 'status_id') %>
+  <%= f.input :src_eng_id, :label => t('Sourcing Eng'), :collection => Authentify::User.where(:status => 'active'), :include_blank => true unless readonly?(@part, 'src_eng_id') %>
+  <%= f.input :src_eng_name, :label => t('Sourcing Eng'), :input_html => {:value => @part.src_eng.name} if @part.src_eng_id.present? && readonly?(@part, 'src_eng_id') %>
+  <%= f.input :plant_id, :label => t('Sourcing Plant'), :collection => SrcPlantx::Plant.where(:active => true).order('id') unless readonly?(@part, 'plant_id') %>
+  <%= f.input :plant_name, :label => t('Sourcing Plant'), :input_html => {:value => @part.plant.name} if @part.plant_id.present? && readonly?(@part, 'plant_id') %>
+  <%= f.input :void_noupdate, :label => t('Void'), :readonly => true, :required => false, :input_html => {:value => @part.void} if readonly?(@part, 'void') %>
+  <%= f.input :void, :label => t('Void'), :input_html => {:value => @part.void} unless readonly?(@part, 'void') %>
+  <%= f.input :state, :label => t('State'), :readonly => true, :input_html => {:value => t(@part.state)} %>
+  <%= f.input :requested_by_name, :label => t('Requested By'), :readonly => true, :input_html => {:value => @part.requested_by.name} %>
+  <%= f.input :brief_note, :label => t('Brief Note'), :readonly => readonly?(@part, 'brief_note'), :input_html => {:rows => 2} %>
+    
+  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
+<% end %>  
+
+<% end %>

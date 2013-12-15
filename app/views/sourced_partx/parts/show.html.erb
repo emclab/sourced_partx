@@ -1,0 +1,95 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+  <% else %>
+<div id="main_body">
+<h4><%=t('Sourcing Part Info') %></h4>
+
+<p>
+  <b><%= t('Project Name') %></b>
+  <%= @part.project.name %>
+</p>
+<p>
+  <b><%= t('Name') %></b>
+  <%= @part.name %>
+</p>
+<p>
+  <b><%= t('Part#') %></b>
+  <%= @part.part_num %>
+</p>
+<p>
+  <b><%= t('Spec') %></b>
+  <%= @part.spec %>
+</p>
+<p>
+  <b><%= t('Qty/Unit') %></b>
+  <%= @part.qty %>/<%=@part.unit %>
+</p>
+<p>
+  <b><%= t('Unit Price($)') %></b>
+  <%= number_with_precision(@part.unit_price, :precision => 2) %>
+</p>
+<p>
+  <b><%= t('Shipping Cost($)') %></b>
+  <%= number_with_precision(@part.shipping_cost, :precision => 2) if @part.shipping_cost.present? %>
+</p>
+<p>
+  <b><%= t('Tax($)') %></b>
+  <%= number_with_precision(@part.tax, :precision => 2) if @part.tax.present? %>
+</p>
+<p>
+  <b><%= t('Misc Cost($)') %></b>
+  <%= number_with_precision(@part.misc_cost, :precision => 2) if @part.misc_cost.present? %>
+</p>
+<p>
+  <b><%= t('Total($)') %></b>
+  <%= number_with_precision(@part.unit_price * @part.qty, :precision => 2) %>
+</p>
+<p>
+  <b><%= t('Sourcing Status') %></b>
+  <%= @part.status.name if @part.status_id.present? %>
+</p>
+<p>
+  <b><%= t('Sourcing Plant') %></b>
+  <%= @part.plant.name if @part.plant_id.present? %>
+</p>
+<p>
+  <b><%= t('Start Date') %></b>
+  <%= @part.start_date.strftime('%Y/%m/%d') if @part.start_date.present? %>
+</p>
+<p>
+  <b><%= t('Finish Date') %></b>
+  <%= @part.finish_date.strftime('%Y/%m/%d') if @part.finish_date.present? %>
+</p>
+
+<p>
+  <b><%= t('Completed?') %></b>
+  <%= @part.completed ? t('Yes') : t('No') %>
+</p>
+<p>
+  <b><%= t('Void') %></b>
+  <%= @part.void ? t('Yes') : t('No') %>
+</p>
+
+<p>
+  <b><%= t('Requested By') %></b>
+  <%= @part.requested_by.name %>
+</p>
+<p>
+  <b><%= t('Last Updated By') %></b>
+  <%= @part.last_updated_by.name %>
+</p>
+<p>
+  <b>LOG：</b>
+  <% Commonx::Log.where('resource_id = ? AND resource_name = ?', @part.id, params[:controller].sub('/', '_')).order("created_at DESC").each do |t| %>
+    <li><%= t.created_at.strftime("%Y/%m/%d") %>,&nbsp; <%= t.last_updated_by.name %>,&nbsp; <%= t.log %> </li>
+  <% end %>
+</p>
+
+  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @part.id, :resource_name => params[:controller], :subaction => 'part_sourcing', :format => :js), :remote => true, 
+                          :id => 'new_log_link', :class => BUTTONS_CLS['action'] if has_action_right?('create_part_sourcing', 'commonx/logs') %>    	
+</div>
+
+<% end %>

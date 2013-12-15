@@ -1,0 +1,6 @@
+SourcedPartx.project_class = 'HeavyMachineryProjectx::Project'
+SourcedPartx.customer_class = 'Kustomerx::Customer'
+SourcedPartx.plant_class = 'SrcPlantx::Plant'
+SourcedPartx.show_project_path = 'heavy_machinery_projectx.project_path(r.project_id)'
+SourcedPartx.show_customer_path = 'kustomerx.customer_path(r.customer_id)'
+SourcedPartx.show_plant_path = 'src_plantx.plant_path(r.src_plant_id)'

@@ -1,0 +1,79 @@
+ <% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+  <% else %>
+<div class="pagination"><%= will_paginate models %></div>
+    <table class="table table-striped">
+		<tr>
+			<th>#</th>
+			<th><%= t('Project Name') %></th>
+			<th><%= t('Customer') %></th>
+			<th><%= t('Part Name') %></th>
+			<th><%= t('Part#') %></th>
+			<th><%= t('Spec') %></th>
+			<th><%= t('Qty/Unit') %></th>
+			<th><%= t('Unit Price($)') %></th>
+			<th><%= t('Total($)') %></th>
+			<th><%= t('Created Date') %></th>
+			<th><%= t('Src Plant') %></th>
+			<th><%= t('Void') %></th>
+			<th><%= t('Start Date') %></th>
+			<th><%= t('Finish Date') %></th>
+			<th><%= t('Complted') %></th>
+			<th><%= t('Sourcing Eng') %></th>
+			<th><%= t('Requested By') %></th>
+			<th><%= t('Status') %></th>
+			<th></th>
+		</tr>
+		<% models.each do |r| %>
+		  <tr>
+		  	<% unless has_action_right?('show', params[:controller], r) %>
+		  	  <td><%= prt(r, :id) %></td>
+		  	<% else %>
+		  	  <td><%= link_to r.id.to_s, SUBURI + "/authentify/view_handler?index=1&url=#{part_path(r)}" %></td>
+		  	<% end %>
+		  	<% unless has_action_right?('show', SourcedPartx.project_class.to_s.underscore.pluralize) %>
+		  	  <td><%= prt(r, 'project.name') %></td>
+		  	<% else %>
+		  	  <td><%= link_to r.project.name, SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI::escape(eval(SourcedPartx.show_project_path))}" %></td>
+		  	<% end %>
+		  	<% unless has_action_right?('show', SourcedPartx.customer_class.to_s.underscore.pluralize) %>
+		  	  <td><%= prt(r, 'customer.name') %></td>
+		  	<% else %>
+		  	  <td><%= link_to r.customer.short_name, SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI::escape(eval(SourcedPartx.show_customer_path))}" %></td>
+		  	<% end %>
+		  	<td><%= prt(r, :name) %></td>
+			<td><%= prt(r, :part_num) %></td>
+			<td><%= prt(r, :spec) %></td>
+			<td><%= prt(r, :qty) %>/<%= prt(r, :unit) %></td>
+			<td><%= number_with_precision(prt(r, :unit_price), :precision => 2) %></td>
+			<td><%= number_with_precision(r.unit_price * r.qty, :precision => 2) %></td>
+			<td><%= r.created_at.strftime("%Y/%m/%d") %></td>
+			<% unless has_action_right?('show', SourcedPartx.plant_class.to_s.underscore.pluralize) %>
+		  	  <td><%= prt(r, 'plant.short_name') if r.plant_id.present? %></td>
+		  	<% else %>
+		  	  <td><%= link_to r.plant.short_name, SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI::escape(eval(SourcedPartx.show_plant_path))}" if r.plant_id.present? %></td>
+		  	<% end %>
+		  	<td><%= t(prt(r, :void).to_s) %></td>
+			<td><%= r.start_date.strftime("%Y/%m/%d") if r.start_date.present? %></td>
+			<td><%= r.finish_date.strftime("%Y/%m/%d") if r.finish_date.present? %></td>
+			<td><%= t(prt(r, :completed).to_s) %></td>
+			<td><%= prt(r, 'src_eng.name') if r.src_eng_id.present? %></td> 
+			<td><%= prt(r, 'requested_by.name') %></td> 
+			<td><%= prt(r, 'status.name') if r.status_id.present? %></td>    
+			<td><%= link_to t('Edit'), SUBURI + "/authentify/view_handler?index=1&url=#{edit_part_path(r, :parent_record_id => r.project_id, :parent_resource => SourcedPartx.project_class.to_s.underscore.pluralize)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %></td>
+		  </tr>
+		<% end %>
+	</table>
+	
+	<table class="table table-striped">
+	  <tr>
+	    <th>
+	    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	    	<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
+	    </th>
+	  </tr>
+	</table>
+	
+	<% end %>
+	

@@ -1,0 +1,31 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+  <% else %>
+<%= simple_form_for @part do |f| %>  
+      <%= f.input :customer_name, :label => t('Customer'), :readonly => true, :input_html => {:value => @customer.name} %>
+      <%= f.input :project_name, :label => t('Project Name'), :readonly => true, :input_html => {:value => @project.name} %>
+	  <%= f.input :name, :label => t('Part Name') %>  
+	  <%= f.input :part_num, :label => t('Part#') %>
+	  <%= f.input :spec, :label => t('Spec'), :input_html => {:rows => 3} %>
+	  <%= f.input :qty, :label => t('Qty') %>
+	  <%= f.input :unit, :label => t('Qty Unit'), :collection => @qty_unit, :include_blank => true %>
+	  <%= f.input :unit_price, :label => t('Unit Price($)') %>
+	  <%= f.input :shipping_cost, :label => t('Shipping Cost($)') %>
+	  <%= f.input :tax, :label => t('Tax($)') %>
+	  <%= f.input :misc_cost, :label => t('Misc Cost($)') %>
+	  <%= f.input :total, :label => t('Total($)'), :readonly => true %>
+	  <%= f.input :start_date, :label => t('Start Date'), :as => :string %>
+	  <%= f.input :finish_date, :label => t('Finish Date'), :as => :string %>
+      <%= f.input :completed, :label => t("Completed?"), :as => :boolean %>
+	  <%= f.input :status_id, :label => t('Sourcing Status'), :collection => Commonx::MiscDefinition.where(:for_which => 'part_purchasing_status'), :include_blank => true %>
+	  <%= f.input :src_eng_id, :label => t('Sourcing Eng'), :collection => Authentify::User.where(:status => 'active'), :include_blank => true %>
+	  <%= f.input :plant_id, :label => t('Sourcing Plant'), :collection => SrcPlantx::Plant.where(:active => true).order('id') %>	  
+	  <%= f.input :brief_note, :label => t('Brief Note'), :input_html => {:rows => 2} %>
+	  
+	  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+	  <%= f.button :submit, t('Save'), :class =>'btn btn-primary' %>  
+<% end %>
+  
+<% end%>
+
