@@ -26,6 +26,8 @@ module SourcedPartx
       if @part.save
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
       else
+        @project = SourcedPartx.project_class.find_by_id(params[:part][:project_id]) if params[:part].present? && params[:part][:project_id].present?
+        @customer = SourcedPartx.customer_class.find_by_id(params[:part][:customer_id]) if params[:part].present? && params[:part][:customer_id].present?
         flash.now[:error] = t('Data Error. Not Saved!')
         render 'new'
       end

@@ -5,6 +5,8 @@
 <%= simple_form_for @part do |f| %>  
       <%= f.input :customer_name, :label => t('Customer'), :readonly => true, :input_html => {:value => @customer.name} %>
       <%= f.input :project_name, :label => t('Project Name'), :readonly => true, :input_html => {:value => @project.name} %>
+      <%= f.input :customer_id, :as => :hidden, :input_html => {:value => @customer.id} %>
+      <%= f.input :project_id, :as => :hidden, :input_html => {:value => @project.id} %>
 	  <%= f.input :name, :label => t('Part Name') %>  
 	  <%= f.input :part_num, :label => t('Part#') %>
 	  <%= f.input :spec, :label => t('Spec'), :input_html => {:rows => 3} %>
