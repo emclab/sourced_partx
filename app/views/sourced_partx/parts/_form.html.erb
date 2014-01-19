@@ -28,7 +28,6 @@
   <%= f.input :plant_name, :label => t('Sourcing Plant'), :input_html => {:value => @part.plant.name} if @part.plant_id.present? && readonly?(@part, 'plant_id') %>
   <%= f.input :void_noupdate, :label => t('Void'), :readonly => true, :required => false, :input_html => {:value => @part.void} if readonly?(@part, 'void') %>
   <%= f.input :void, :label => t('Void'), :input_html => {:value => @part.void} unless readonly?(@part, 'void') %>
-  <%= f.input :state, :label => t('State'), :readonly => true, :input_html => {:value => t(@part.state)} %>
   <%= f.input :requested_by_name, :label => t('Requested By'), :readonly => true, :input_html => {:value => @part.requested_by.name} %>
   <%= f.input :brief_note, :label => t('Brief Note'), :readonly => readonly?(@part, 'brief_note'), :input_html => {:rows => 2} %>
     

@@ -14,8 +14,7 @@ FactoryGirl.define do
     src_eng_id 1
     project_id 1
     last_updated_by_id 1
-    comment "MyText"
-    state "MyString"
+    wf_state ""
     wfid "MyString"
     status_id 1
     customer_id 1

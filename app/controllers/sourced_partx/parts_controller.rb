@@ -17,6 +17,7 @@ module SourcedPartx
     def new
       @title = 'New Sourcing Part'
       @part = SourcedPartx::Part.new
+      @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
     end
   
     def create
@@ -28,6 +29,7 @@ module SourcedPartx
       else
         @project = SourcedPartx.project_class.find_by_id(params[:part][:project_id]) if params[:part].present? && params[:part][:project_id].present?
         @customer = SourcedPartx.customer_class.find_by_id(params[:part][:customer_id]) if params[:part].present? && params[:part][:customer_id].present?
+        @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
         flash.now[:error] = t('Data Error. Not Saved!')
         render 'new'
       end
@@ -36,6 +38,10 @@ module SourcedPartx
     def edit
       @title = 'Edit Sourcing Part'
       @part = SourcedPartx::Part.find_by_id(params[:id])
+      @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
+      if @part.wf_state.present? && @part.current_state != :fresh
+        redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=NO Update. Record Being Processed!")
+      end
     end
   
     def update
@@ -44,6 +50,7 @@ module SourcedPartx
       if @part.update_attributes(params[:part], :as => :role_update)
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
       else
+        @qty_unit = find_config_const('piece_unit').split(',').map(&:strip)
         flash.now[:error] = t('Data Error. Not Updated!')
         render 'edit'
       end
@@ -53,6 +60,11 @@ module SourcedPartx
       @title = 'Sourcing Part Info'
       @part = SourcedPartx::Part.find_by_id(params[:id])
       @erb_code = find_config_const('part_show_view', 'sourced_partx')
+    end
+    
+    def list_open_process  
+      index()
+      @parts = return_open_process(@parts, 3)  #3 is number of final state
     end
     
     protected

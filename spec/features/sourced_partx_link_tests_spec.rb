@@ -22,6 +22,34 @@ describe "LinkTests" do
          'mini-link'    => mini_btn +  'btn btn-link'
         }
     before(:each) do
+      wf = "def submit
+          wf_common_action('fresh', 'reviewing', 'submit')
+        end   
+        def vp_approve
+          wf_common_action('vp_reviewing', 'approved', 'vp_approve')
+        end    
+        def vp_reject
+          wf_common_action('vp_reviewing', 'rejected', 'vp_reject')
+        end
+        def vp_rewind
+          wf_common_action('vp_reviewing', 'fresh', 'vp_rewind')
+        end
+        def stamp
+          wf_common_action('approved', 'stamped', 'stamp')
+        end
+        def complete
+          wf_common_action('stamped', 'completed', 'complete')
+        end"
+      FactoryGirl.create(:engine_config, :engine_name => 'sourced_partx', :engine_version => nil, :argument_name => 'part_wf_action_def', :argument_value => wf)
+      FactoryGirl.create(:engine_config, :engine_name => '', :engine_version => nil, :argument_name => 'wf_pdef_in_config', :argument_value => 'true')
+      FactoryGirl.create(:engine_config, :engine_name => '', :engine_version => nil, :argument_name => 'wf_route_in_config', :argument_value => 'true')
+      FactoryGirl.create(:engine_config, :engine_name => '', :engine_version => nil, :argument_name => 'wf_validate_in_config', :argument_value => 'true')
+      FactoryGirl.create(:engine_config, :engine_name => '', :engine_version => nil, :argument_name => 'wf_list_open_process_in_day', :argument_value => '45')
+      FactoryGirl.create(:engine_config, :engine_name => 'sourced_partx', :engine_version => nil, :argument_name => 'part_vp_approve', 
+                         :argument_value => "<%= f.input :start_date, :label => t('Start Date') , :as => :string %>")
+      FactoryGirl.create(:engine_config, :engine_name => 'sourced_partx', :engine_version => nil, :argument_name => 'validate_part_vp_approve', 
+                         :argument_value => "validates :start_date, :presence => true                                             
+                                           ")
       @pagination_config = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'pagination', :argument_value => 30)
       @project_num_time_gen = FactoryGirl.create(:engine_config, :engine_name => 'heavy_machinery_projectx', :engine_version => nil, :argument_name => 'project_num_time_gen', :argument_value => ' HeavyMachineryProjectx::Project.last.nil? ? (Time.now.strftime("%Y%m%d") + "-"  + 112233.to_s + "-" + rand(100..999).to_s) :  (Time.now.strftime("%Y%m%d") + "-"  + (HeavyMachineryProjectx::Project.last.project_num.split("-")[-2].to_i + 555).to_s + "-" + rand(100..999).to_s)')
       engine_config = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'piece_unit', :argument_value => "set, piece")
@@ -43,7 +71,12 @@ describe "LinkTests" do
       :sql_code => "record.requested_by_id == session[:user_id]")
       user_access = FactoryGirl.create(:user_access, :action => 'create_part_sourcing', :resource => 'commonx_logs', :role_definition_id => @role.id, :rank => 1,
       :sql_code => "")
-      
+      ua1 = FactoryGirl.create(:user_access, :action => 'event_action', :resource => 'sourced_partx_parts', :role_definition_id => @role.id, :rank => 1,
+      :sql_code => "")
+      ua1 = FactoryGirl.create(:user_access, :action => 'vp_approve', :resource => 'sourced_partx_parts', :role_definition_id => @role.id, :rank => 1,
+      :sql_code => "")
+      ua1 = FactoryGirl.create(:user_access, :action => 'list_open_process', :resource => 'sourced_partx_parts', :role_definition_id => @role.id, :rank => 1,
+      :sql_code => "SourcedPartx::Part.where(:void => false).order('created_at DESC')")
       @pur_sta = FactoryGirl.create(:commonx_misc_definition, 'for_which' => 'part_sourcng_status')
       @cust = FactoryGirl.create(:kustomerx_customer) 
       @plant = FactoryGirl.create(:src_plantx_plant)
@@ -61,11 +94,11 @@ describe "LinkTests" do
       #save_and_open_page
       page.should have_content('Sourcing Parts')
       click_link 'Edit'
-      page.should have_content('Edit Sourcing Part')
       #save_and_open_page
+      page.should have_content('Edit Sourcing Part')     
       visit parts_path
       click_link task.id.to_s
-      save_and_open_page
+      #save_and_open_page
       page.should have_content('Sourcing Part Info')
       click_link 'New Log'
       #save_and_open_page
@@ -74,6 +107,29 @@ describe "LinkTests" do
       visit new_part_path(:project_id => @proj.id)
       #save_and_open_page
       page.should have_content('New Sourcing Part')
+    end 
+    
+    it "work for workflow" do
+      task = FactoryGirl.create(:sourced_partx_part, :project_id => @proj.id, :plant_id => @plant.id, :wf_state => 'vp_reviewing')
+      visit parts_path
+      save_and_open_page
+      click_link 'VP Approve'
+      save_and_open_page
+      fill_in 'part_wf_comment', :with => 'this line tests workflow'
+      fill_in 'part_start_date', :with => Date.today
+      #save_and_open_page
+      click_button 'Save'
+      #
+      visit parts_path
+      #save_and_open_page
+      click_link 'Open Process'
+      page.should have_content('Parts')
+      
+      visit parts_path
+      click_link task.id.to_s
+      save_and_open_page
+      page.should have_content('this line tests workflow')
+      page.should have_content(Date.today.to_s.gsub('-', '/'))
     end
     
   end
