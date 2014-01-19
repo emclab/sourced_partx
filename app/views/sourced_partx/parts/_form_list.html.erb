@@ -23,6 +23,10 @@
 			<th><%= t('Sourcing Eng') %></th>
 			<th><%= t('Requested By') %></th>
 			<th><%= t('Status') %></th>
+			<th><%= t('WF State') %></th>
+			<th></th>
+			<th></th>
+			<th></th>
 			<th></th>
 		</tr>
 		<% models.each do |r| %>
@@ -60,8 +64,9 @@
 			<td><%= t(prt(r, :completed).to_s) %></td>
 			<td><%= prt(r, 'src_eng.name') if r.src_eng_id.present? %></td> 
 			<td><%= prt(r, 'requested_by.name') %></td> 
-			<td><%= prt(r, 'status.name') if r.status_id.present? %></td>    
-			<td><%= link_to t('Edit'), SUBURI + "/authentify/view_handler?index=1&url=#{edit_part_path(r, :parent_record_id => r.project_id, :parent_resource => SourcedPartx.project_class.to_s.underscore.pluralize)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %></td>
+			<td><%= prt(r, 'status.name') if r.status_id.present? %></td>  
+			<td><%= t(prt(r, :wf_state).humanize) if r.wf_state.present? %></td>  
+			<td><%= link_to t('Edit'), SUBURI + "/authentify/view_handler?index=1&url=#{edit_part_path(r, :parent_record_id => r.project_id, :parent_resource => SourcedPartx.project_class.to_s.underscore.pluralize)}", :class => BUTTONS_CLS['action']  if (r.wf_state.nil? or r.wf_state == 'fresh') && has_action_right?('update', params[:controller], r) %></td>
 			<td><%= link_to t('Submit'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_part_path(r, :wf_event => 'submit', :resource_id => r.id, :resource_string => params[:controller])}", :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'fresh' && has_action_right?('submit', params[:controller], r) %></td>
 			<td><%= link_to t('Manager ') + t('Approve'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_part_path(r, :wf_event => 'manager_approve', :resource_id => r.id, :resource_string => params[:controller])}", :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'manager_reviewing' && has_action_right?('vp_approve', params[:controller], r) %></td>
 			<td><%= link_to t('Manager ') + t('Reject'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_part_path(r, :wf_event => 'manager_reject', :resource_id => r.id, :resource_string => params[:controller])}", :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'manager_reviewing' && has_action_right?('vp_reject', params[:controller], r) %></td>
