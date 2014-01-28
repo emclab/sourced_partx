@@ -11,8 +11,8 @@ module SourcedPartx
       if Authentify::AuthentifyUtility.find_config_const('wf_pdef_in_config') == 'true' && wf.present?
          #quotes is table name
         eval(wf) if wf.present? && self.wf_state.present 
-      else   
-        state :fresh do
+      elsif Rails.env.test?  
+        state :initial_state do
           event :submit, :transitions_to => :manager_reviewing
         end
         state :manager_reviewing do
@@ -22,7 +22,7 @@ module SourcedPartx
         state :vp_reviewing do
           event :vp_approve, :transitions_to => :approved
           event :vp_reject, :transitions_to => :rejected
-          event :vp_rewind, :transitions_to => :fresh
+          event :vp_rewind, :transitions_to => :initial_state
         end
         state :approved do
           event :stamp, :transitions_to => :stamped

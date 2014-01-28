@@ -11,7 +11,7 @@ SourcedPartx::Engine.routes.draw do
     workflow_routes = Authentify::AuthentifyUtility.find_config_const('part_wf_route', 'sourced_partx')
     if Authentify::AuthentifyUtility.find_config_const('wf_route_in_config') == 'true' && workflow_routes.present?
       eval(workflow_routes) 
-    else
+    elsif Rails.env.test?
       member do
         get :event_action
         put :submit

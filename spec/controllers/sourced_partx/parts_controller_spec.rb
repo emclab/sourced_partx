@@ -25,6 +25,7 @@ module SourcedPartx
           wf_common_action('approved', 'completed', 'complete')
         end"
       FactoryGirl.create(:engine_config, :engine_name => 'sourced_partx', :engine_version => nil, :argument_name => 'part_wf_action_def', :argument_value => wf)
+      FactoryGirl.create(:engine_config, :engine_name => 'sourced_partx', :engine_version => nil, :argument_name => 'part_wf_final_state_string', :argument_value => 'completed, rejected')
       FactoryGirl.create(:engine_config, :engine_name => '', :engine_version => nil, :argument_name => 'wf_pdef_in_config', :argument_value => 'true')
       FactoryGirl.create(:engine_config, :engine_name => '', :engine_version => nil, :argument_name => 'wf_route_in_config', :argument_value => 'true')
       FactoryGirl.create(:engine_config, :engine_name => '', :engine_version => nil, :argument_name => 'wf_validate_in_config', :argument_value => 'true')
