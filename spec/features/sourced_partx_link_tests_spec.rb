@@ -70,7 +70,7 @@ describe "LinkTests" do
       :sql_code => "")
       user_access = FactoryGirl.create(:user_access, :action => 'show', :resource =>'sourced_partx_parts', :role_definition_id => @role.id, :rank => 1,
       :sql_code => "record.requested_by_id == session[:user_id]")
-      user_access = FactoryGirl.create(:user_access, :action => 'create_part_sourcing', :resource => 'commonx_logs', :role_definition_id => @role.id, :rank => 1,
+      user_access = FactoryGirl.create(:user_access, :action => 'create_part_sourced', :resource => 'commonx_logs', :role_definition_id => @role.id, :rank => 1,
       :sql_code => "")
       ua1 = FactoryGirl.create(:user_access, :action => 'event_action', :resource => 'sourced_partx_parts', :role_definition_id => @role.id, :rank => 1,
       :sql_code => "")
