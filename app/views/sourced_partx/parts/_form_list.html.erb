@@ -61,7 +61,7 @@
 		  	<td><%= t(prt(r, :void).to_s) %></td>
 			<td><%= r.start_date.strftime("%Y/%m/%d") if r.start_date.present? %></td>
 			<td><%= r.finish_date.strftime("%Y/%m/%d") if r.finish_date.present? %></td>
-			<td><%= t(prt(r, :completed).to_s) %></td>
+			<td><%= r.completed ? t('Yes') : t('No') %></td>
 			<td><%= prt(r, 'src_eng.name') if r.src_eng_id.present? %></td> 
 			<td><%= prt(r, 'requested_by.name') %></td> 
 			<td><%= prt(r, 'status.name') if r.status_id.present? %></td>  

@@ -108,6 +108,12 @@ describe "LinkTests" do
       visit new_part_path(:project_id => @proj.id)
       #save_and_open_page
       page.should have_content('New Sourcing Part')
+      fill_in 'part_name', :with => 'test'
+      fill_in 'part_qty', :with => 3
+      fill_in 'part_spec', :with => 'spec'
+      select('piece', :from => 'part_unit') 
+      click_button 'Save'
+
     end 
     
     it "work for workflow" do

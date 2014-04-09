@@ -36,10 +36,11 @@ module SourcedPartx
     end
     
     attr_accessor :void_nopudate, :status_name, :src_eng_name, :project_name, :plant_name, :last_updated_by_name, :requested_by_name, :completed_noupdate, :id_noupdate, 
-                  :wf_comment
+                  :wf_comment, :customer_name
     attr_accessible :finish_date, :last_updated_by_id, :name, :part_num, :plant_id, :project_id, :qty, :spec, :src_eng_id, :start_date, :wf_state, 
                     :status_id, :unit, :unit_price, :void, :wfid, :customer_id, :shipping_cost, :tax, :total, :misc_cost, :total, :brief_note, :completed,
                     :requested_by_id,
+                    :customer_name, :project_name,
                     :as => :role_new
     attr_accessible :finish_date, :last_updated_by_id, :name, :part_num, :plant_id, :project_id, :qty, :spec, :src_eng_id, :start_date, :wf_state, 
                     :status_id, :unit, :unit_price, :void, :wfid, :customer_id, :shipping_cost, :tax, :total, :misc_cost, :total, :brief_note, :requested_by_id,
