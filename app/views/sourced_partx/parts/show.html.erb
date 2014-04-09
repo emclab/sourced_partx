@@ -27,7 +27,7 @@
 </p>
 <p>
   <b><%= t('Unit Price($)') %></b>
-  <%= number_with_precision(@part.unit_price, :precision => 2) %>
+  <%= number_with_precision(@part.unit_price, :precision => 2) if @part.unit_price.present? %>
 </p>
 <p>
   <b><%= t('Shipping Cost($)') %></b>
@@ -43,7 +43,7 @@
 </p>
 <p>
   <b><%= t('Total($)') %></b>
-  <%= number_with_precision(@part.unit_price * @part.qty, :precision => 2) %>
+  <%= number_with_precision(@part.total, :precision => 2) if @part.total.present? %>
 </p>
 <p>
   <b><%= t('Sourcing Status') %></b>

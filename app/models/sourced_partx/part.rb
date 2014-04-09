@@ -56,11 +56,13 @@ module SourcedPartx
     belongs_to :requested_by, :class_name => 'Authentify::User'
     belongs_to :customer, :class_name => SourcedPartx.customer_class.to_s
 
-    validates :project_id, :plant_id, :status_id, :qty, :requested_by_id, :customer_id, :presence => true,
-                           :numericality => {:greater_than => 0, :only_integer => true}
-    validates :unit_price, :total, :presence => true, :numericality => { :greater_than => 0 }
     validates :name, :presence => true, :uniqueness => {:scope => :project_id, :case_sensitive => false, :message => I18n.t('Duplicate Sourcing Part Name') }
     validates_presence_of :spec, :unit 
+    validates :project_id, :qty, :requested_by_id, :customer_id, :presence => true,
+                           :numericality => {:greater_than => 0, :only_integer => true}
+    validates :unit_price, :total, :numericality => { :greater_than => 0 }, :if => 'unit_price.present?'
+    validates :total, :numericality => { :greater_than => 0 }, :if => 'total.present?'
+    
     
     #for workflow input validation  
     validate :validate_wf_input_data, :if => 'wf_state.present?' 
