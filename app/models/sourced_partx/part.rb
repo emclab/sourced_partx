@@ -46,7 +46,7 @@ module SourcedPartx
                     :status_id, :unit, :unit_price, :void, :wfid, :customer_id, :shipping_cost, :tax, :total, :misc_cost, :total, :brief_note, :requested_by_id,
                     :completed,
                     :void_nopudate, :status_name, :src_eng_name, :project_name, :plant_name, :last_updated_by_name, :completed_noupdate, :requested_by_name,
-                    :id_noupdate, :wf_comment,
+                    :id_noupdate, :wf_comment, :customer_name,
                     :as => :role_update
                     
     belongs_to :project, :class_name => SourcedPartx.project_class.to_s
