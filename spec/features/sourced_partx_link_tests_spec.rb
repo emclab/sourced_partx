@@ -96,7 +96,14 @@ describe "LinkTests" do
       page.should have_content('Sourcing Parts')
       click_link 'Edit'
       #save_and_open_page
-      page.should have_content('Edit Sourcing Part')     
+      page.should have_content('Edit Sourcing Part')  
+      fill_in 'part_name', :with => 'new name'
+      click_button "Save"
+      #bad data
+      fill_in 'part_name', :with => ''
+      click_button "Save"
+      save_and_open_page
+         
       visit parts_path
       click_link task.id.to_s
       #save_and_open_page
