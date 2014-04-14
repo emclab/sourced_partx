@@ -72,6 +72,8 @@ describe "LinkTests" do
       :sql_code => "record.requested_by_id == session[:user_id]")
       user_access = FactoryGirl.create(:user_access, :action => 'create_part_sourced', :resource => 'commonx_logs', :role_definition_id => @role.id, :rank => 1,
       :sql_code => "")
+      user_access = FactoryGirl.create(:user_access, :action => 'index_sourced_partx', :resource => 'payment_requestx_payment_requests', :role_definition_id => @role.id, :rank => 1,
+      :sql_code => "PaymentRequestx::PaymentRequest.where(:void => false).order('created_at DESC')")
       ua1 = FactoryGirl.create(:user_access, :action => 'event_action', :resource => 'sourced_partx_parts', :role_definition_id => @role.id, :rank => 1,
       :sql_code => "")
       ua1 = FactoryGirl.create(:user_access, :action => 'vp_approve', :resource => 'sourced_partx_parts', :role_definition_id => @role.id, :rank => 1,
@@ -102,8 +104,14 @@ describe "LinkTests" do
       #bad data
       fill_in 'part_name', :with => ''
       click_button "Save"
+      #save_and_open_page
+      
+      #to payment request
+      visit parts_path
       save_and_open_page
-         
+      click_link 'Payment Requests'
+      save_and_open_page
+       
       visit parts_path
       click_link task.id.to_s
       #save_and_open_page
