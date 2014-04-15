@@ -37,7 +37,7 @@ $(function(){
     });
 });
 
-function sumTotal() {
+function SumTotal() {
 	var rpt = ($("#part_qty").val() * $("#part_unit_price").val());
 	var total = 0.0000;
 	if ($.isNumeric(rpt)) {

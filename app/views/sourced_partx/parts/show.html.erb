@@ -81,7 +81,7 @@
 </p>
 <p>
   <b><%= t('WF State') %>:</b>
-  <%= t(@part.wf_state) if @part.wf_state.present? %>
+  <%= t(@part.wf_state.humanize.titleize) if @part.wf_state.present? %>
 </p>
 <p>
 <% if @part.wf_state.present? %>
