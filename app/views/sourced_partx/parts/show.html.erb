@@ -87,7 +87,7 @@
 <% if @part.wf_state.present? %>
   <b><%=t('Workflow History')%>:</b>
   <% StateMachineLogx::Log.where('resource_id = ? AND resource_string = ?', @part.id, params[:controller]).order('created_at DESC').each do |t| %>
-    <li><%= t.created_at.strftime("%Y/%m/%d") %>,&nbsp; <%= t.action_by_name %>,&nbsp; <%=t(t.from)%>,&nbsp; <%=t(t.event.capitalize) %>,&nbsp; <%=t(t.to)%>,&nbsp;<%= t.comment %> </li>
+    <li><%= t.created_at.strftime("%Y/%m/%d") %>,&nbsp; <%= t.action_by_name %>,&nbsp; <%=t(t.from.humanize.titleize)%>,&nbsp; <%=t(t.event.humanize.titleize) %>,&nbsp; <%=t(t.to.humanize.titleize)%>,&nbsp;<%= t.comment %> </li>
   <% end %>
 <% end %>	
 </p>
