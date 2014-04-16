@@ -7,7 +7,7 @@ module SourcedPartx
     
     workflow do
       #self.to_s = 'EngineName::TableName'    ex, 'InQuotex::Quote'
-      wf = Authentify::AuthentifyUtility.find_config_const('quote_wf_pdef', 'in_quotex')
+      wf = Authentify::AuthentifyUtility.find_config_const('part_wf_pdef', 'sourced_partx')
       if Authentify::AuthentifyUtility.find_config_const('wf_pdef_in_config') == 'true' && wf.present?
          #quotes is table name
         eval(wf) # if wf.present? #&& self.wf_state.present? 
