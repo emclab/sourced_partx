@@ -72,8 +72,6 @@ describe "LinkTests" do
       :sql_code => "record.requested_by_id == session[:user_id]")
       user_access = FactoryGirl.create(:user_access, :action => 'create_part_sourced', :resource => 'commonx_logs', :role_definition_id => @role.id, :rank => 1,
       :sql_code => "")
-      user_access = FactoryGirl.create(:user_access, :action => 'index_sourced_partx', :resource => 'payment_requestx_payment_requests', :role_definition_id => @role.id, :rank => 1,
-      :sql_code => "PaymentRequestx::PaymentRequest.where(:void => false).order('created_at DESC')")
       ua1 = FactoryGirl.create(:user_access, :action => 'event_action', :resource => 'sourced_partx_parts', :role_definition_id => @role.id, :rank => 1,
       :sql_code => "")
       ua1 = FactoryGirl.create(:user_access, :action => 'vp_approve', :resource => 'sourced_partx_parts', :role_definition_id => @role.id, :rank => 1,
@@ -92,6 +90,8 @@ describe "LinkTests" do
       click_button 'Login'
     end
     it "works! (now write some real specs)" do
+      user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'payment_requestx_payment_requests', :role_definition_id => @role.id, :rank => 1,
+      :sql_code => "PaymentRequestx::PaymentRequest.where(:void => false).order('created_at DESC')")
       task = FactoryGirl.create(:sourced_partx_part, :project_id => @proj.id, :plant_id => @plant.id)
       visit parts_path
       #save_and_open_page
@@ -130,6 +130,15 @@ describe "LinkTests" do
       click_button 'Save'
 
     end 
+    
+    it "should allow index for subaction sourced_partx" do
+      user_access = FactoryGirl.create(:user_access, :action => 'index_sourced_partx', :resource => 'payment_requestx_payment_requests', :role_definition_id => @role.id, :rank => 1,
+      :sql_code => "PaymentRequestx::PaymentRequest.where(:void => false, :resource_string => 'sourced_partx/parts').order('created_at DESC')")
+      task = FactoryGirl.create(:sourced_partx_part, :project_id => @proj.id, :plant_id => @plant.id)
+      visit parts_path
+      click_link 'Payment Requests'
+      save_and_open_page
+    end
     
     it "work for workflow" do
       task = FactoryGirl.create(:sourced_partx_part, :project_id => @proj.id, :plant_id => @plant.id, :wf_state => 'vp_reviewing')
