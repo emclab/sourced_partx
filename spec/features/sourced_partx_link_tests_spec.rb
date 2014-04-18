@@ -131,7 +131,7 @@ describe "LinkTests" do
 
     end 
     
-    it "should allow index for subaction sourced_partx" do
+    it "should allow index payment request for subaction sourced_partx" do
       user_access = FactoryGirl.create(:user_access, :action => 'index_sourced_partx', :resource => 'payment_requestx_payment_requests', :role_definition_id => @role.id, :rank => 1,
       :sql_code => "PaymentRequestx::PaymentRequest.where(:void => false, :resource_string => 'sourced_partx/parts').order('created_at DESC')")
       task = FactoryGirl.create(:sourced_partx_part, :project_id => @proj.id, :plant_id => @plant.id)

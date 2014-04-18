@@ -48,7 +48,13 @@ module SourcedPartx
                     :void_nopudate, :status_name, :src_eng_name, :project_name, :plant_name, :last_updated_by_name, :completed_noupdate, :requested_by_name,
                     :id_noupdate, :wf_comment, :customer_name,
                     :as => :role_update
-                    
+    
+    attr_accessor   :project_id_s, :start_date_s, :end_date_s, :purchasing_id_s, :customer_id_s, :eng_id_s, :name_s, :spec_s, :part_num_s, 
+                    :plant_id_s, :delivered_s, :time_frame_s, :keyword_s, :status_id_s, :requested_by_id_s, :manufacturer_id_s
+
+    attr_accessible :project_id_s, :start_date_s, :end_date_s, :purchasing_id_s, :customer_id_s, :eng_id_s, :status_id_s, :manufacturer_id_s,
+                    :plant_id_s, :delivered_s, :keyword_s, :requested_by_id_s, :name_s, :spec_s, :part_num_s, :as => :role_search_stats
+                                    
     belongs_to :project, :class_name => SourcedPartx.project_class.to_s
     belongs_to :src_eng, :class_name => 'Authentify::User'
     belongs_to :plant, :class_name => SourcedPartx.plant_class.to_s
