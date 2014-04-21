@@ -128,6 +128,17 @@ describe "LinkTests" do
       fill_in 'part_spec', :with => 'spec'
       select('piece', :from => 'part_unit') 
       click_button 'Save'
+      
+      #with wrong data
+      visit new_part_path(:project_id => @proj.id)
+      #save_and_open_page
+      page.should have_content('New Sourcing Part')
+      fill_in 'part_name', :with => ''
+      fill_in 'part_qty', :with => 3
+      fill_in 'part_spec', :with => 'spec'
+      select('piece', :from => 'part_unit') 
+      click_button 'Save'
+      save_and_open_page
 
     end 
     

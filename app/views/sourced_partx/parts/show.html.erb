@@ -46,6 +46,10 @@
   <%= number_with_precision(@part.total, :precision => 2) if @part.total.present? %>
 </p>
 <p>
+  <b><%= t('Total Audited($)') %></b>
+  <%= number_with_precision(@part.total_audited, :precision => 2) if @part.total_audited.present? %>
+</p>
+<p>
   <b><%= t('Sourcing Status') %></b>
   <%= @part.status.name if @part.status_id.present? %>
 </p>

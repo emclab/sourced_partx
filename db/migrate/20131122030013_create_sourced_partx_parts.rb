@@ -26,6 +26,7 @@ class CreateSourcedPartxParts < ActiveRecord::Migration
       t.decimal :tax, :precision => 10, :scale => 2
       t.decimal :misc_cost, :precision => 10, :scale => 2
       t.decimal :total, :precision => 10, :scale => 2
+      t.decimal :total_audited, :precision => 10, :scale => 2
     
     end
     

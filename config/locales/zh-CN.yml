@@ -71,6 +71,7 @@ zh-CN:
   Misc Cost($) : '杂费（￥）'
   Tax($) : '税（￥）'
   Total($) : '总额（￥）'
+  Total Audited($) : '核实总额（￥）'
   Qty Unit : '数量单位'
   Qty/Unit : '数量/单位'
   Completed? : '完成？'
