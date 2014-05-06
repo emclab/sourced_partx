@@ -18,19 +18,22 @@ class CreatePaymentRequestxPaymentRequests < ActiveRecord::Migration
       t.date :estimated_pay_date
       t.boolean :approved
       t.date :approved_date
-      t.string :wfid
       t.string :wf_state
+      t.integer :pr_category_id
+      t.integer :project_id
       
     end
     
     add_index :payment_requestx_payment_requests, :resource_id
     add_index :payment_requestx_payment_requests, :resource_string
     add_index :payment_requestx_payment_requests, [:resource_id, :resource_string], :name => :payment_requestx_payment_requests_resource
-    add_index :payment_requestx_payment_requests, :wfid
+    add_index :payment_requestx_payment_requests, :project_id
     add_index :payment_requestx_payment_requests, :void
     add_index :payment_requestx_payment_requests, :paid
     add_index :payment_requestx_payment_requests, :wf_state
     add_index :payment_requestx_payment_requests, :requested_by_id
     add_index :payment_requestx_payment_requests, :paid_by_id
+    add_index :payment_requestx_payment_requests, :pr_category_id
+ 
   end
 end

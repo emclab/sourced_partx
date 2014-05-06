@@ -48,7 +48,7 @@
 		  	<% end %>
 		  	<td><%= prt(r, :name) %></td>
 			<td><%= prt(r, :part_num) %></td>
-			<td><%= prt(r, :spec) %></td>
+			<td><%= prt(r, :part_spec) %></td>
 			<td><%= prt(r, :qty) %>/<%= prt(r, :unit) %></td>
 			<td><%= number_with_precision(prt(r, :unit_price), :precision => 2) if r.unit_price.present? %></td>
 			<td><%= number_with_precision(r.unit_price * r.qty, :precision => 2) if r.unit_price.present? %></td>

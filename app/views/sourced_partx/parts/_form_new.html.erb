@@ -9,7 +9,7 @@
       <%= f.input :project_id, :as => :hidden, :input_html => {:value => @project.id} %>
 	  <%= f.input :name, :label => t('Part Name') %>  
 	  <%= f.input :part_num, :label => t('Part#') %>
-	  <%= f.input :spec, :label => t('Spec'), :input_html => {:rows => 3} %>
+	  <%= f.input :part_spec, :label => t('Spec'), :input_html => {:rows => 2} %>
 	  <%= f.input :qty, :label => t('Qty') %>
 	  <%= f.input :unit, :label => t('Qty Unit'), :collection => @qty_unit, :include_blank => true %>
 	  <%= f.input :unit_price, :label => t('Unit Price($)') %>

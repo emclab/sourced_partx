@@ -125,7 +125,7 @@ describe "LinkTests" do
       page.should have_content('New Sourcing Part')
       fill_in 'part_name', :with => 'test'
       fill_in 'part_qty', :with => 3
-      fill_in 'part_spec', :with => 'spec'
+      fill_in 'part_part_spec', :with => 'spec'
       select('piece', :from => 'part_unit') 
       click_button 'Save'
       
@@ -135,7 +135,7 @@ describe "LinkTests" do
       page.should have_content('New Sourcing Part')
       fill_in 'part_name', :with => ''
       fill_in 'part_qty', :with => 3
-      fill_in 'part_spec', :with => 'spec'
+      fill_in 'part_part_spec', :with => 'spec'
       select('piece', :from => 'part_unit') 
       click_button 'Save'
       save_and_open_page

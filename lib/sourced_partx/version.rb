@@ -1,3 +1,3 @@
 module SourcedPartx
-  VERSION = "3.2.12.13"
+  VERSION = "3.2.12.14"
 end

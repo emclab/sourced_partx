@@ -8,7 +8,7 @@
   <%= f.input :project_name, :label => t('Project Name'), :readonly => true, :input_html => {:value => @project.name} %>
   <%= f.input :name, :label => t('Part Name'), :readonly => readonly?(@part, 'name') %>  
   <%= f.input :part_num, :label => t('Part#'), :readonly => readonly?(@part, 'part_num') %>
-  <%= f.input :spec, :label => t('Spec'), :input_html => {:rows => 3}, :readonly => readonly?(@part, 'spec') %>
+  <%= f.input :part_spec, :label => t('Spec'), :input_html => {:rows => 2}, :readonly => readonly?(@part, 'part_spec') %>
   <%= f.input :qty, :label => t('Qty'), :readonly => readonly?(@part, 'qty') %>
   <%= f.input :unit, :label => t('Qty Unit'), :collection => @qty_unit, :readonly => readonly?(@part, 'unit') %>
   <%= f.input :unit_price, :label => t('Unit Price($)'), :readonly => readonly?(@part, 'unit_price') %>

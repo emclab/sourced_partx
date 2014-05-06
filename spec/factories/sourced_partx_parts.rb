@@ -4,7 +4,7 @@ FactoryGirl.define do
   factory :sourced_partx_part, :class => 'SourcedPartx::Part' do
     name "MyString"
     part_num "MyString"
-    spec "MyText"
+    part_spec "MyText"
     qty 1
     unit "MyString"
     #unit_price "9.99"
@@ -15,7 +15,6 @@ FactoryGirl.define do
     project_id 1
     last_updated_by_id 1
     wf_state ""
-    wfid "MyString"
     #status_id 1
     customer_id 1
     void false

@@ -17,6 +17,11 @@ module SourcedPartx
       c.should_not be_valid
     end
     
+    it "should reject nil part_spec" do
+      c = FactoryGirl.build(:sourced_partx_part, :part_spec => nil)
+      c.should_not be_valid
+    end
+    
     it "should reject dup name" do
       c = FactoryGirl.create(:sourced_partx_part, :name => "nil")
       c1 = FactoryGirl.build(:sourced_partx_part, :name => "Nil", :project_id => c.project_id)

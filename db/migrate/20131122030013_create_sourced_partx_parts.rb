@@ -3,7 +3,7 @@ class CreateSourcedPartxParts < ActiveRecord::Migration
     create_table :sourced_partx_parts do |t|
       t.string :name
       t.string :part_num
-      t.text :spec
+      t.text :part_spec
       t.integer :qty
       t.string :unit
       t.decimal :unit_price, :precision => 10, :scale => 2
@@ -18,7 +18,6 @@ class CreateSourcedPartxParts < ActiveRecord::Migration
       t.integer :requested_by_id
       t.integer :customer_id
       t.string :wf_state
-      t.string :wfid
       t.integer :status_id
       t.boolean :void, :default => false
       t.text :brief_note
@@ -35,7 +34,6 @@ class CreateSourcedPartxParts < ActiveRecord::Migration
     add_index :sourced_partx_parts, :void
     add_index :sourced_partx_parts, :src_eng_id
     add_index :sourced_partx_parts, :plant_id
-    add_index :sourced_partx_parts, :wfid
     add_index :sourced_partx_parts, :wf_state
     add_index :sourced_partx_parts, :name
     add_index :sourced_partx_parts, :status_id
