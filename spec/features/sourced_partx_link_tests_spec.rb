@@ -49,7 +49,7 @@ describe "LinkTests" do
       FactoryGirl.create(:engine_config, :engine_name => 'sourced_partx', :engine_version => nil, :argument_name => 'part_vp_approve_inline', 
                          :argument_value => "<%= f.input :start_date, :label => t('Start Date') , :as => :string %>")
       FactoryGirl.create(:engine_config, :engine_name => 'sourced_partx', :engine_version => nil, :argument_name => 'validate_part_vp_approve', 
-                         :argument_value => "validates :start_date, :presence => true                                             
+                         :argument_value => "errors.add(:start_date, I18n.t('Not be blank')) if start_date.blank?                                             
                                            ")
       @pagination_config = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'pagination', :argument_value => 30)
       @project_num_time_gen = FactoryGirl.create(:engine_config, :engine_name => 'heavy_machinery_projectx', :engine_version => nil, :argument_name => 'project_num_time_gen', :argument_value => ' HeavyMachineryProjectx::Project.last.nil? ? (Time.now.strftime("%Y%m%d") + "-"  + 112233.to_s + "-" + rand(100..999).to_s) :  (Time.now.strftime("%Y%m%d") + "-"  + (HeavyMachineryProjectx::Project.last.project_num.split("-")[-2].to_i + 555).to_s + "-" + rand(100..999).to_s)')
@@ -153,6 +153,20 @@ describe "LinkTests" do
     
     it "work for workflow" do
       task = FactoryGirl.create(:sourced_partx_part, :project_id => @proj.id, :plant_id => @plant.id, :wf_state => 'vp_reviewing')
+      #bad data
+      visit parts_path
+      click_link 'VP Approve'
+      save_and_open_page
+      fill_in 'part_wf_comment', :with => 'this line tests workflow'
+      fill_in 'part_start_date', :with => nil #Date.today
+      #save_and_open_page
+      click_button 'Save'
+      #check
+      visit parts_path
+      click_link task.id.to_s
+      #save_and_open_page
+      page.should_not have_content('this line tests workflow')
+      #good data
       visit parts_path
       save_and_open_page
       click_link 'VP Approve'

@@ -36,7 +36,7 @@ module SourcedPartx
     end
     
     attr_accessor :void_nopudate, :status_name, :src_eng_name, :project_name, :plant_name, :last_updated_by_name, :requested_by_name, :completed_noupdate, :id_noupdate, 
-                  :wf_comment, :customer_name
+                  :wf_comment, :customer_name, :wf_state_noupdate, :wf_event
     attr_accessible :finish_date, :last_updated_by_id, :name, :part_num, :plant_id, :project_id, :qty, :part_spec, :src_eng_id, :start_date, :wf_state, 
                     :status_id, :unit, :unit_price, :void, :customer_id, :shipping_cost, :tax, :total, :misc_cost, :total, :brief_note, :completed,
                     :requested_by_id,
@@ -46,7 +46,7 @@ module SourcedPartx
                     :status_id, :unit, :unit_price, :void, :customer_id, :shipping_cost, :tax, :total, :misc_cost, :total, :brief_note, :requested_by_id,
                     :completed, :total_audited,
                     :void_nopudate, :status_name, :src_eng_name, :project_name, :plant_name, :last_updated_by_name, :completed_noupdate, :requested_by_name,
-                    :id_noupdate, :wf_comment, :customer_name,
+                    :id_noupdate, :wf_comment, :customer_name, :wf_state_noupdate, 
                     :as => :role_update
     
     attr_accessor   :project_id_s, :start_date_s, :end_date_s, :purchasing_id_s, :customer_id_s, :eng_id_s, :name_s, :part_spec_s, :part_num_s, 
@@ -75,7 +75,7 @@ module SourcedPartx
     validate :validate_wf_input_data, :if => 'wf_state.present?' 
     
     def validate_wf_input_data
-      wf = Authentify::AuthentifyUtility.find_config_const('validate_part_' + self.wf_state, 'sourced_partx')
+      wf = Authentify::AuthentifyUtility.find_config_const('validate_part_' + self.wf_event, 'sourced_partx') if self.wf_event.present?
       if Authentify::AuthentifyUtility.find_config_const('wf_validate_in_config') == 'true' && wf.present? 
         eval(wf) 
       end
