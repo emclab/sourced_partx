@@ -3,9 +3,9 @@ SourcedPartx::Engine.routes.draw do
   resources :parts do
     collection do
       get :search
-      put :search_results
+      get :search_results
       get :stats
-      put :stats_results    
+      get :stats_results    
     end
 #=begin    
     workflow_routes = Authentify::AuthentifyUtility.find_config_const('part_wf_route', 'sourced_partx')
