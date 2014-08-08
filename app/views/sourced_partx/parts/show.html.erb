@@ -27,27 +27,27 @@
 </p>
 <p>
   <b><%= t('Unit Price($)') %></b>
-  <%= number_with_precision(@part.unit_price, :precision => 2) if @part.unit_price.present? %>
+  <%= @part.unit_price %>
 </p>
 <p>
   <b><%= t('Shipping Cost($)') %></b>
-  <%= number_with_precision(@part.shipping_cost, :precision => 2) if @part.shipping_cost.present? %>
+  <%= @part.shipping_cost %>
 </p>
 <p>
   <b><%= t('Tax($)') %></b>
-  <%= number_with_precision(@part.tax, :precision => 2) if @part.tax.present? %>
+  <%= @part.tax %>
 </p>
 <p>
   <b><%= t('Misc Cost($)') %></b>
-  <%= number_with_precision(@part.misc_cost, :precision => 2) if @part.misc_cost.present? %>
+  <%= @part.misc_cost %>
 </p>
 <p>
   <b><%= t('Total($)') %></b>
-  <%= number_with_precision(@part.total, :precision => 2) if @part.total.present? %>
+  <%= @part.total %>
 </p>
 <p>
   <b><%= t('Total Audited($)') %></b>
-  <%= number_with_precision(@part.total_audited, :precision => 2) if @part.total_audited.present? %>
+  <%= @part.total_audited %>
 </p>
 <p>
   <b><%= t('Sourcing Status') %></b>

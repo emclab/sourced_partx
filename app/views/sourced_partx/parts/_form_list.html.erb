@@ -50,8 +50,8 @@
 			<td><%= prt(r, :part_num) %></td>
 			<td><%= prt(r, :part_spec) %></td>
 			<td><%= prt(r, :qty) %>/<%= prt(r, :unit) %></td>
-			<td><%= number_with_precision(prt(r, :unit_price), :precision => 2) if r.unit_price.present? %></td>
-			<td><%= number_with_precision(r.unit_price * r.qty, :precision => 2) if r.unit_price.present? %></td>
+			<td><%= prt(r, :unit_price) %></td>
+			<td><%= prt(r, :total) %></td>
 			<td><%= r.created_at.strftime("%Y/%m/%d") %></td>
 			<% unless has_action_right?('show', SourcedPartx.plant_class.to_s.underscore.pluralize) %>
 		  	  <td><%= prt(r, 'plant.short_name') if r.plant_id.present? %></td>
