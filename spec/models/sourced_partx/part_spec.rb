@@ -53,8 +53,18 @@ module SourcedPartx
       c.should_not be_valid
     end
     
-    it "should reject 0 unit_price" do
+    it "should take 0 unit_price" do
       c = FactoryGirl.build(:sourced_partx_part, :unit_price => 0)
+      c.should be_valid
+    end
+    
+    it "should take negative unit_price" do
+      c = FactoryGirl.build(:sourced_partx_part, :unit_price => -1)
+      c.should be_valid
+    end
+    
+    it "should reject non numerical unit_price" do
+      c = FactoryGirl.build(:sourced_partx_part, :unit_price => '-a')
       c.should_not be_valid
     end
     
