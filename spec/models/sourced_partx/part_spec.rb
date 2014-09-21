@@ -68,10 +68,10 @@ module SourcedPartx
       c.should_not be_valid
     end
     
-    #it "should reject nil unit_price" do
-     # c = FactoryGirl.build(:sourced_partx_part, :unit_price => nil)
-    #  c.should_not be_valid
-    #end
+    it "should reject nil unit_price" do
+      c = FactoryGirl.build(:sourced_partx_part, :unit_price => nil)
+      c.should be_valid
+    end
    
     it "should reject 0 total" do
       c = FactoryGirl.build(:sourced_partx_part, :total => 0)
