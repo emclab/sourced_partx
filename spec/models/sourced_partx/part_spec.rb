@@ -73,9 +73,9 @@ module SourcedPartx
       c.should be_valid
     end
    
-    it "should reject 0 total" do
-      c = FactoryGirl.build(:sourced_partx_part, :total => 0)
-      c.should_not be_valid
+    it "should take negative total" do
+      c = FactoryGirl.build(:sourced_partx_part, :total => -10)
+      c.should be_valid
     end
     
     #it "should reject nil total" do

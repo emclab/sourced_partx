@@ -68,7 +68,7 @@ module SourcedPartx
     validates :project_id, :qty, :requested_by_id, :customer_id, :presence => true,
                            :numericality => {:greater_than => 0, :only_integer => true}
     validates :unit_price, :numericality => {:if => 'unit_price.present?'}
-    validates :total, :numericality => { :greater_than => 0 }, :if => 'total.present?'
+    validates :total, :numericality => { :if => 'total.present?' } 
     validate :dynamic_validate
     
     #for workflow input validation  
