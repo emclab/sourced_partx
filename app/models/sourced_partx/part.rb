@@ -39,12 +39,12 @@ module SourcedPartx
                   :wf_comment, :customer_name, :wf_state_noupdate, :wf_event
     attr_accessible :finish_date, :last_updated_by_id, :name, :part_num, :plant_id, :project_id, :qty, :part_spec, :src_eng_id, :start_date, :wf_state, 
                     :status_id, :unit, :unit_price, :void, :customer_id, :shipping_cost, :tax, :total, :misc_cost, :total, :brief_note, :completed,
-                    :requested_by_id,
+                    :requested_by_id, :approved, :approved_date, :approved_by_id,
                     :customer_name, :project_name,
                     :as => :role_new
     attr_accessible :finish_date, :last_updated_by_id, :name, :part_num, :plant_id, :project_id, :qty, :part_spec, :src_eng_id, :start_date, :wf_state, 
                     :status_id, :unit, :unit_price, :void, :customer_id, :shipping_cost, :tax, :total, :misc_cost, :total, :brief_note, :requested_by_id,
-                    :completed, :total_audited,
+                    :completed, :total_audited, :approved, :approved_date, :approved_by_id,
                     :void_nopudate, :status_name, :src_eng_name, :project_name, :plant_name, :last_updated_by_name, :completed_noupdate, :requested_by_name,
                     :id_noupdate, :wf_comment, :customer_name, :wf_state_noupdate, 
                     :as => :role_update
@@ -61,14 +61,16 @@ module SourcedPartx
     belongs_to :status, :class_name => 'Commonx::MiscDefinition'
     belongs_to :last_updated_by, :class_name => 'Authentify::User'
     belongs_to :requested_by, :class_name => 'Authentify::User'
+    belongs_to :approved_by, :class_name => 'Authentify::User'
     belongs_to :customer, :class_name => SourcedPartx.customer_class.to_s
 
     validates :name, :presence => true, :uniqueness => {:scope => :project_id, :case_sensitive => false, :message => I18n.t('Duplicate Sourcing Part Name') }
-    validates_presence_of :part_spec, :unit 
+    validates :part_spec, :unit, :presence => true 
     validates :project_id, :qty, :requested_by_id, :customer_id, :presence => true,
                            :numericality => {:greater_than => 0, :only_integer => true}
     validates :unit_price, :numericality => {:if => 'unit_price.present?'}
     validates :total, :numericality => { :if => 'total.present?' } 
+    validates :approved_by_id, :numericality => {:greater_than => 0, :only_integer => true}, :if => 'approved_by_id.present?'
     validate :dynamic_validate
     
     #for workflow input validation  

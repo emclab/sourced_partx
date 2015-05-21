@@ -26,7 +26,9 @@ class CreateSourcedPartxParts < ActiveRecord::Migration
       t.decimal :misc_cost, :precision => 10, :scale => 2
       t.decimal :total, :precision => 10, :scale => 2
       t.decimal :total_audited, :precision => 10, :scale => 2
-    
+      t.boolean :approved
+      t.integer :approved_by_id
+      t.date :approved_date
     end
     
     add_index :sourced_partx_parts, :project_id
@@ -38,5 +40,6 @@ class CreateSourcedPartxParts < ActiveRecord::Migration
     add_index :sourced_partx_parts, :name
     add_index :sourced_partx_parts, :status_id
     add_index :sourced_partx_parts, :completed
+    add_index :sourced_partx_parts, :approved
   end
 end
