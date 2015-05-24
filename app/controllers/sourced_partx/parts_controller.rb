@@ -8,6 +8,7 @@ module SourcedPartx
     def index
       @title = 'Sourcing Parts'      
       @parts = params[:sourced_partx_parts][:model_ar_r]
+      @parts = @parts.where(:wf_state => params[:wf_state].split(',')) if params[:wf_state]
       @parts = @parts.where(:customer_id => @customer.id) if @customer
       @parts = @parts.where(:project_id => @project.id) if @project
       @parts = @parts.page(params[:page]).per_page(@max_pagination)
