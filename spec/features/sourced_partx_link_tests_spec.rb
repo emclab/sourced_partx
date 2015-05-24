@@ -148,15 +148,15 @@ describe "LinkTests" do
       task = FactoryGirl.create(:sourced_partx_part, :project_id => @proj.id, :plant_id => @plant.id)
       visit parts_path
       click_link 'Payment Requests'
-      save_and_open_page
+      #save_and_open_page
     end
     
     it "work for workflow" do
       task = FactoryGirl.create(:sourced_partx_part, :project_id => @proj.id, :plant_id => @plant.id, :wf_state => 'vp_reviewing')
       #bad data
       visit parts_path
-      click_link 'VP Approve'
       save_and_open_page
+      click_link 'VP Approve'
       fill_in 'part_wf_comment', :with => 'this line tests workflow'
       fill_in 'part_start_date', :with => nil #Date.today
       #save_and_open_page
@@ -168,7 +168,7 @@ describe "LinkTests" do
       page.should_not have_content('this line tests workflow')
       #good data
       visit parts_path
-      save_and_open_page
+      #save_and_open_page
       click_link 'VP Approve'
       save_and_open_page
       fill_in 'part_wf_comment', :with => 'this line tests workflow'
