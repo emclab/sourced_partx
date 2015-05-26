@@ -37,6 +37,7 @@ module SourcedPartx
     
     attr_accessor :void_nopudate, :status_name, :src_eng_name, :project_name, :plant_name, :last_updated_by_name, :requested_by_name, :completed_noupdate, :id_noupdate, 
                   :wf_comment, :customer_name, :wf_state_noupdate, :wf_event
+=begin
     attr_accessible :finish_date, :last_updated_by_id, :name, :part_num, :plant_id, :project_id, :qty, :part_spec, :src_eng_id, :start_date, :wf_state, 
                     :status_id, :unit, :unit_price, :void, :customer_id, :shipping_cost, :tax, :total, :misc_cost, :total, :brief_note, :completed,
                     :requested_by_id, :approved, :approved_date, :approved_by_id,
@@ -54,6 +55,7 @@ module SourcedPartx
 
     attr_accessible :project_id_s, :start_date_s, :end_date_s, :purchasing_id_s, :customer_id_s, :eng_id_s, :status_id_s, :manufacturer_id_s,
                     :plant_id_s, :delivered_s, :keyword_s, :requested_by_id_s, :name_s, :part_spec_s, :part_num_s, :as => :role_search_stats
+=end
                                     
     belongs_to :project, :class_name => SourcedPartx.project_class.to_s
     belongs_to :src_eng, :class_name => 'Authentify::User'
@@ -65,12 +67,12 @@ module SourcedPartx
     belongs_to :customer, :class_name => SourcedPartx.customer_class.to_s
 
     validates :name, :presence => true, :uniqueness => {:scope => :project_id, :case_sensitive => false, :message => I18n.t('Duplicate Sourcing Part Name') }
-    validates_presence_of :part_spec, :unit 
+    validates :part_spec, :unit, :presence => true 
     validates :project_id, :qty, :requested_by_id, :customer_id, :presence => true,
                            :numericality => {:greater_than => 0, :only_integer => true}
     validates :unit_price, :numericality => {:if => 'unit_price.present?'}
     validates :total, :numericality => { :if => 'total.present?' } 
-    validates_numericality_of :approved_by_id, :greater_than => 0, :only_integer => true, :if => 'approved_by_id.present?'
+    validates :approved_by_id, :numericality => {:greater_than => 0, :only_integer => true}, :if => 'approved_by_id.present?'
     validate :dynamic_validate
     
     #for workflow input validation  

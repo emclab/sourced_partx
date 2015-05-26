@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe "LinkTests" do
+RSpec.describe "LinkTests", type: :request do
   describe "GET /sourced_partx_link_tests" do
     mini_btn = 'btn btn-mini '
     ActionView::CompiledTemplates::BUTTONS_CLS =
@@ -19,7 +19,11 @@ describe "LinkTests" do
          'inverse'      => 'btn btn-inverse',
          'mini-inverse' => mini_btn + 'btn btn-inverse',
          'link'         => 'btn btn-link',
-         'mini-link'    => mini_btn +  'btn btn-link'
+         'mini-link'    => mini_btn +  'btn btn-link',
+         'right-span#'         => '2', 
+               'left-span#'         => '6', 
+               'offset#'         => '2',
+               'form-span#'         => '4'
         }
     before(:each) do
       wf = "def submit
@@ -93,12 +97,12 @@ describe "LinkTests" do
       user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'payment_requestx_payment_requests', :role_definition_id => @role.id, :rank => 1,
       :sql_code => "PaymentRequestx::PaymentRequest.where(:void => false).order('created_at DESC')")
       task = FactoryGirl.create(:sourced_partx_part, :project_id => @proj.id, :plant_id => @plant.id)
-      visit parts_path
+      visit sourced_partx.parts_path
       #save_and_open_page
-      page.should have_content('Sourcing Parts')
+      expect(page).to have_content('Sourcing Parts')
       click_link 'Edit'
       #save_and_open_page
-      page.should have_content('Edit Sourcing Part')  
+      expect(page).to have_content('Edit Sourcing Part')  
       fill_in 'part_name', :with => 'new name'
       click_button "Save"
       #bad data
@@ -107,22 +111,22 @@ describe "LinkTests" do
       #save_and_open_page
       
       #to payment request
-      visit parts_path
+      visit sourced_partx.parts_path
       save_and_open_page
       click_link 'Payment Requests'
       save_and_open_page
        
-      visit parts_path
+      visit sourced_partx.parts_path
       click_link task.id.to_s
       #save_and_open_page
-      page.should have_content('Sourcing Part Info')
+      expect(page).to have_content('Sourcing Part Info')
       click_link 'New Log'
       #save_and_open_page
-      page.should have_content('Log')
+      expect(page).to have_content('Log')
       
-      visit new_part_path(:project_id => @proj.id)
+      visit sourced_partx.new_part_path(:project_id => @proj.id)
       #save_and_open_page
-      page.should have_content('New Sourcing Part')
+      expect(page).to have_content('New Sourcing Part')
       fill_in 'part_name', :with => 'test'
       fill_in 'part_qty', :with => 3
       fill_in 'part_part_spec', :with => 'spec'
@@ -130,9 +134,9 @@ describe "LinkTests" do
       click_button 'Save'
       
       #with wrong data
-      visit new_part_path(:project_id => @proj.id)
+      visit sourced_partx.new_part_path(:project_id => @proj.id)
       #save_and_open_page
-      page.should have_content('New Sourcing Part')
+      expect(page).to have_content('New Sourcing Part')
       fill_in 'part_name', :with => ''
       fill_in 'part_qty', :with => 3
       fill_in 'part_part_spec', :with => 'spec'
@@ -146,46 +150,47 @@ describe "LinkTests" do
       user_access = FactoryGirl.create(:user_access, :action => 'index_sourced_partx', :resource => 'payment_requestx_payment_requests', :role_definition_id => @role.id, :rank => 1,
       :sql_code => "PaymentRequestx::PaymentRequest.where(:void => false, :resource_string => 'sourced_partx/parts').order('created_at DESC')")
       task = FactoryGirl.create(:sourced_partx_part, :project_id => @proj.id, :plant_id => @plant.id)
-      visit parts_path
+      visit sourced_partx.parts_path
       click_link 'Payment Requests'
-      save_and_open_page
+      expect(page).to have_content('Payment Requests')
     end
     
     it "work for workflow" do
       task = FactoryGirl.create(:sourced_partx_part, :project_id => @proj.id, :plant_id => @plant.id, :wf_state => 'vp_reviewing')
       #bad data
-      visit parts_path
-      click_link 'VP Approve'
+      visit sourced_partx.parts_path
+      save_and_open_page
+      click_link 'Vp Approve'
       save_and_open_page
       fill_in 'part_wf_comment', :with => 'this line tests workflow'
       fill_in 'part_start_date', :with => nil #Date.today
       #save_and_open_page
       click_button 'Save'
       #check
-      visit parts_path
+      visit sourced_partx.parts_path
       click_link task.id.to_s
       #save_and_open_page
-      page.should_not have_content('this line tests workflow')
+      expect(page).not_to have_content('this line tests workflow')
       #good data
-      visit parts_path
+      visit sourced_partx.parts_path
       save_and_open_page
-      click_link 'VP Approve'
+      click_link 'Vp Approve'
       save_and_open_page
       fill_in 'part_wf_comment', :with => 'this line tests workflow'
       fill_in 'part_start_date', :with => Date.today
       #save_and_open_page
       click_button 'Save'
       #
-      visit parts_path
+      visit sourced_partx.parts_path
       #save_and_open_page
       click_link 'Open Process'
-      page.should have_content('Parts')
+      expect(page).to have_content('Parts')
       
-      visit parts_path
+      visit sourced_partx.parts_path
       click_link task.id.to_s
       save_and_open_page
-      page.should have_content('this line tests workflow')
-      page.should have_content(Date.today.to_s.gsub('-', '/'))
+      expect(page).to have_content('this line tests workflow')
+      expect(page).to have_content(Date.today.to_s.gsub('-', '/'))
     end
     
   end

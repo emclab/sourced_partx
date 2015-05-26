@@ -2,8 +2,8 @@ require_dependency "sourced_partx/application_controller"
 
 module SourcedPartx
   class PartsController < ApplicationController
-    before_filter :require_employee
-    before_filter :load_parent_record
+    before_action :require_employee
+    before_action :load_parent_record
     
     def index
       @title = 'Sourcing Parts'      
@@ -22,7 +22,7 @@ module SourcedPartx
     end
   
     def create
-      @part = SourcedPartx::Part.new(params[:part], :as => :role_new)
+      @part = SourcedPartx::Part.new(new_params)
       @part.last_updated_by_id = session[:user_id]
       @part.requested_by_id = session[:user_id]
       if @part.save
@@ -50,7 +50,7 @@ module SourcedPartx
     def update
       @part = SourcedPartx::Part.find_by_id(params[:id])
       @part.last_updated_by_id = session[:user_id]
-      if @part.update_attributes(params[:part], :as => :role_update)
+      if @part.update_attributes(edit_params)
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
       else
         @erb_code = find_config_const('part_edit_view', 'sourced_partx')
@@ -78,6 +78,20 @@ module SourcedPartx
       @customer = SourcedPartx.customer_class.find_by_id(@project.customer_id) if params[:project_id].present?
       @project = SourcedPartx.project_class.find_by_id(SourcedPartx::Part.find_by_id(params[:id]).project_id) if params[:id].present?
       @customer = SourcedPartx.customer_class.find_by_id(SourcedPartx::Part.find_by_id(params[:id]).customer_id) if params[:id].present?
+    end
+    
+    private
+    
+    def new_params
+      params.require(:part).permit(:finish_date, :last_updated_by_id, :name, :part_num, :plant_id, :project_id, :qty, :part_spec, :src_eng_id, :start_date, :wf_state, 
+                    :status_id, :unit, :unit_price, :void, :customer_id, :shipping_cost, :tax, :total, :misc_cost, :total, :brief_note, :completed,
+                    :requested_by_id)
+    end
+    
+    def edit_params
+      params.require(:part).permit(:finish_date, :name, :part_num, :plant_id, :project_id, :qty, :part_spec, :src_eng_id, :start_date, :wf_state, 
+                    :status_id, :unit, :unit_price, :void, :customer_id, :shipping_cost, :tax, :total, :misc_cost, :total, :brief_note, :requested_by_id,
+                    :completed, :total_audited, :approved, :approved_date, :approved_by_id)
     end
     
   end

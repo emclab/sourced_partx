@@ -14,14 +14,14 @@ SourcedPartx::Engine.routes.draw do
     elsif Rails.env.test?
       member do
         get :event_action
-        put :submit
-        put :manager_approve
-        put :manager_reject
-        put :vp_approve
-        put :vp_reject
-        put :vp_rewind
-        put :stamp
-        put :complete
+        patch :submit
+        patch :manager_approve
+        patch :manager_reject
+        patch :vp_approve
+        patch :vp_reject
+        patch :vp_rewind
+        patch :stamp
+        patch :complete
       end
       
       collection do
