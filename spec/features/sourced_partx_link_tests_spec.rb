@@ -98,7 +98,7 @@ RSpec.describe "LinkTests", type: :request do
       :sql_code => "PaymentRequestx::PaymentRequest.where(:void => false).order('created_at DESC')")
       task = FactoryGirl.create(:sourced_partx_part, :project_id => @proj.id, :plant_id => @plant.id)
       visit sourced_partx.parts_path
-      #save_and_open_page
+      save_and_open_page
       expect(page).to have_content('Sourcing Parts')
       click_link 'Edit'
       #save_and_open_page
@@ -112,9 +112,9 @@ RSpec.describe "LinkTests", type: :request do
       
       #to payment request
       visit sourced_partx.parts_path
-      save_and_open_page
+      #save_and_open_page
       click_link 'Payment Requests'
-      save_and_open_page
+      #save_and_open_page
        
       visit sourced_partx.parts_path
       click_link task.id.to_s
